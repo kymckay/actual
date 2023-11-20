@@ -21,10 +21,14 @@ export const defaultInputStyle = {
   border: '1px solid ' + theme.formInputBorder,
 };
 
+type InputKeyboardEvent = KeyboardEvent<HTMLInputElement> & {
+  target: HTMLInputElement;
+};
+
 export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   style?: CSSProperties;
   inputRef?: Ref<HTMLInputElement>;
-  onEnter?: (event: KeyboardEvent<HTMLInputElement>) => void;
+  onEnter?: (event: InputKeyboardEvent) => void;
   onUpdate?: (newValue: string) => void;
   focused?: boolean;
 };
@@ -61,7 +65,7 @@ export default function Input({
       {...nativeProps}
       onKeyDown={e => {
         if (e.key === 'Enter' && onEnter) {
-          onEnter(e);
+          onEnter(e as InputKeyboardEvent);
         }
 
         nativeProps.onKeyDown?.(e);
